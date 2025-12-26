@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Cotizador Gauss Control</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --brand-orange: #ea8c2a;
+    }
+
+    body {
+      margin: 0;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      background: #f4f7ff;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 24px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .header img {
+      height: 110px;
+    }
+
+    .header h1 {
+      margin: 0;
+      color: var(--brand-orange);
+      font-size: 28px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    }
+
+    h3 {
+      margin-top: 0;
+      color: #111827;
+    }
+
+    label {
+      font-size: 12px;
+      color: #6b7280;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #dbeafe;
+      background: #f9fbff;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+
+    input:disabled {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      font-family: inherit;
+    }
+
+    .primary {
+      background: var(--brand-orange);
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .danger {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 13px;
+    }
+
+    th {
+      color: #6b7280;
+      text-align: left;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    .summary div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .total {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+      <img src="logo.png" alt="Gauss Control">
+      <h1>Cotizador Gauss Control</h1>
+    </div>
+
+    <div class="grid">
+      <!-- COLUMNA IZQUIERDA -->
+      <div class="card">
+        <h3>Datos generales</h3>
+
+        <label>Fecha</label>
+        <input id="todayDate" type="text" disabled>
+
+        <label>País</label>
+        <select id="country">
+          <option value="">Seleccionar país</option>
+          <option value="Perú">Perú</option>
+          <option value="Chile">Chile</option>
+          <option value="México">México</option>
+          <option value="Colombia">Colombia</option>
+        </select>
+
+        <label>RUC / RUT</label>
+        <input id="taxId" placeholder="Ej: 20123456789">
+
+        <button class="primary" type="button" onclick="lookupTaxId()">Buscar Razón Social</button>
+
+        <label>Razón Social</label>
+        <input id="businessName" disabled placeholder="Se completa al buscar">
+
+        <label>IGV / IVA</label>
+        <input id="tax" type="number" disabled>
+      </div>
+
+      <!-- COLUMNA DERECHA -->
+      <div class="card">
+        <h3>Detalle de la cotización</h3>
+
+        <label>Servicio</label>
+        <select id="service">
+          <option value="Implementación" data-price="500">Implementación</option>
+          <option value="Soporte mensual" data-price="100">Soporte mensual</option>
+          <option value="Mantenimiento" data-price="150">Mantenimiento</option>
+          <option value="Custom" data-price="0">Otro</option>
+        </select>
+
+        <label>Precio unitario</label>
+        <input id="price" type="number" value="500">
+
+        <label>Cantidad</label>
+        <input id="qty" type="number" value="1">
+
+        <label>Descuento % (máx 20)</label>
+        <input id="discount" type="number" value="0" max="20">
+
+        <button class="primary" onclick="addItem()">Agregar ítem</button>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Ítem</th>
+              <th class="right">Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="items"></tbody>
+        </table>
+
+        <div class="summary">
+          <div><span>Subtotal</span><span id="subtotal">S/ 0.00</span></div>
+          <div><span>IGV / IVA</span><span id="taxValue">S/ 0.00</span></div>
+          <div class="total"><span>Total</span><span id="total">S/ 0.00</span></div>
+        </div>
+
+        <label>Notas</label>
+        <textarea id="notes" placeholder="Condiciones, validez, observaciones..."></textarea>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const items = [];
+  const currency = "S/ ";
+
+  const serviceSelect = document.getElementById("service");
+  const priceInput = document.getElementById("price");
+  const countrySelect = document.getElementById("country");
+  const taxInput = document.getElementById("tax");
+
+  const todayDateInput = document.getElementById("todayDate");
+  const taxIdInput = document.getElementById("taxId");
+  const businessNameInput = document.getElementById("businessName");
+
+  const taxByCountry = {
+    "Perú": 18,
+    "Chile": 19,
+    "México": 16,
+    "Colombia": 19
+  };
+
+  // Fecha local según el equipo que abre la página
+  (function setTodayDate() {
+    const d = new Date();
+    todayDateInput.value = d.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    });
+  })();
+
+  serviceSelect.addEventListener("change", e => {
+    priceInput.value = e.target.selectedOptions[0].dataset.price;
+  });
+
+  countrySelect.addEventListener("change", () => {
+    const pct = taxByCountry[countrySelect.value];
+    taxInput.value = pct ?? "";
+    render();
+  });
+
+  function addItem() {
+    if (!countrySelect.value) {
+      alert("Primero selecciona un país");
+      return;
+    }
+
+    const name = serviceSelect.value === "Custom" ? "Servicio" : serviceSelect.value;
+    const price = Number(priceInput.value);
+    const qty = Number(document.getElementById("qty").value);
+    const discount = Math.min(20, Number(document.getElementById("discount").value));
+
+    const total = price * qty * (1 - discount / 100);
+    items.push({ name, total });
+    render();
+  }
+
+  function render() {
+    const tbody = document.getElementById("items");
+    tbody.innerHTML = "";
+
+    let subtotal = 0;
+    items.forEach((it, i) => {
+      subtotal += it.total;
+      tbody.innerHTML += `
+        <tr>
+          <td>${it.name}</td>
+          <td class="right">${currency}${it.total.toFixed(2)}</td>
+          <td><button class="danger" onclick="removeItem(${i})">X</button></td>
+        </tr>`;
+    });
+
+    const taxPct = (Number(taxInput.value) || 0) / 100;
+    const taxValue = subtotal * taxPct;
+    const total = subtotal + taxValue;
+
+    document.getElementById("subtotal").innerText = currency + subtotal.toFixed(2);
+    document.getElementById("taxValue").innerText = currency + taxValue.toFixed(2);
+    document.getElementById("total").innerText = currency + total.toFixed(2);
+  }
+
+  function removeItem(i) {
+    items.splice(i, 1);
+    render();
+  }
+
+  // Consulta RUC (Perú) vía Netlify Function
+  async function lookupTaxId() {
+    if (countrySelect.value !== "Perú") {
+      alert("La búsqueda automática funciona solo para Perú.");
+      return;
+    }
+
+    const ruc = (taxIdInput.value || "").trim();
+    if (!/^\d{11}$/.test(ruc)) {
+      alert("RUC inválido. Debe tener 11 dígitos.");
+      return;
+    }
+
+    businessNameInput.value = "Buscando...";
+
+    try {
+      const resp = await fetch(`/.netlify/functions/ruc?numero=${encodeURIComponent(ruc)}`);
+      const data = await resp.json();
+
+      if (!resp.ok || !data.ok) {
+        businessNameInput.value = "";
+        alert("No se pudo obtener la Razón Social.");
+        return;
+      }
+
+      businessNameInput.value = data.razonSocial || "";
+    } catch (e) {
+      businessNameInput.value = "";
+      alert("Error consultando RUC");
+    }
+  }
+</script>
+</body>
+</html>
