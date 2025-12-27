@@ -6,346 +6,837 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
-    :root {
-      --brand-orange: #ea8c2a;
-    }
+    :root { --brand-orange:#ea8c2a; }
 
-    body {
-      margin: 0;
+    body{
+      margin:0;
       font-family: Verdana, Geneva, Tahoma, sans-serif;
-      background: #f4f7ff;
-      color: #1f2937;
+      background:#f4f7ff;
+      color:#1f2937;
     }
 
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 24px;
+    .container{ max-width:1100px; margin:auto; padding:24px; }
+
+    .header{ display:flex; align-items:center; gap:18px; margin-bottom:24px; }
+    .header img{ height:120px; }
+    .header h1{ margin:0; color:var(--brand-orange); font-size:28px; }
+
+    .grid{ display:grid; grid-template-columns:1fr 2fr; gap:16px; }
+
+    .card{
+      background:white;
+      border-radius:14px;
+      padding:16px;
+      box-shadow:0 10px 25px rgba(0,0,0,.08);
     }
 
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      margin-bottom: 24px;
+    h3{ margin-top:0; }
+
+    label{
+      font-size:12px;
+      color:#6b7280;
+      display:block;
+      margin-bottom:4px;
     }
 
-    .header img {
-      height: 110px;
+    input, select, textarea{
+      width:100%;
+      padding:10px;
+      border-radius:10px;
+      border:1px solid #dbeafe;
+      background:#f9fbff;
+      margin-bottom:10px;
+      box-sizing:border-box;
+      font-family:inherit;
     }
 
-    .header h1 {
-      margin: 0;
-      color: var(--brand-orange);
-      font-size: 28px;
+    input:disabled, select:disabled, textarea:disabled{
+      background:#f1f5f9;
+      color:#475569;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 16px;
+    button{
+      padding:10px 14px;
+      border-radius:10px;
+      border:none;
+      cursor:pointer;
+      font-weight:bold;
+      font-family:inherit;
     }
 
-    .card {
-      background: white;
-      border-radius: 14px;
-      padding: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,.08);
-    }
+    .primary{ background:var(--brand-orange); color:white; margin-bottom:10px; }
+    .danger{ background:#fee2e2; color:#b91c1c; }
+    .muted{ color:#6b7280; font-size:12px; margin-top:-6px; margin-bottom:10px; }
+    .error{ color:#b91c1c; font-size:12px; margin-top:-6px; margin-bottom:10px; }
 
-    h3 {
-      margin-top: 0;
-      color: #111827;
-    }
+    table{ width:100%; border-collapse:collapse; margin-top:10px; }
+    th, td{ padding:10px; border-bottom:1px solid #e5e7eb; font-size:13px; vertical-align:top; }
+    th{ color:#6b7280; text-align:left; }
+    .right{ text-align:right; white-space:nowrap; }
 
-    label {
-      font-size: 12px;
-      color: #6b7280;
-      display: block;
-      margin-bottom: 4px;
-    }
+    .summary div{ display:flex; justify-content:space-between; margin-bottom:6px; font-size:14px; }
+    .total{ font-size:20px; font-weight:bold; }
 
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid #dbeafe;
-      background: #f9fbff;
-      margin-bottom: 10px;
-      box-sizing: border-box;
-      font-family: inherit;
+    /* complementarios alineados a la izquierda */
+    .checkboxes{
+      border:1px solid #dbeafe;
+      background:#f9fbff;
+      border-radius:10px;
+      padding:12px;
+      margin-bottom:10px;
     }
+    .checkboxes label{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      justify-content:flex-start;
+      margin-bottom:8px;
+      font-size:13px;
+      color:#111827;
+    }
+    .checkboxes input{ margin:0; }
+    .checkboxes label:last-child{ margin-bottom:0; }
 
-    input:disabled {
-      background: #f1f5f9;
-      color: #475569;
+    .row-inline{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-bottom:10px;
     }
+    .row-inline input{ margin-bottom:0; flex:1; }
+    .row-inline button{ margin-bottom:0; white-space:nowrap; }
 
-    textarea {
-      resize: vertical;
-    }
-
-    button {
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      font-family: inherit;
-    }
-
-    .primary {
-      background: var(--brand-orange);
-      color: white;
-      margin-bottom: 10px;
-    }
-
-    .danger {
-      background: #fee2e2;
-      color: #b91c1c;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    th, td {
-      padding: 10px;
-      border-bottom: 1px solid #e5e7eb;
-      font-size: 13px;
-    }
-
-    th {
-      color: #6b7280;
-      text-align: left;
-    }
-
-    .right {
-      text-align: right;
-    }
-
-    .summary div {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 6px;
-      font-size: 14px;
-    }
-
-    .total {
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    @media (max-width: 900px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
+    @media(max-width:900px){ .grid{ grid-template-columns:1fr; } }
   </style>
 </head>
 
 <body>
-  <div class="container">
+<div class="container">
 
-    <!-- HEADER -->
-    <div class="header">
-      <img src="logo.png" alt="Gauss Control">
-      <h1>Cotizador Gauss Control</h1>
-    </div>
-
-    <div class="grid">
-      <!-- COLUMNA IZQUIERDA -->
-      <div class="card">
-        <h3>Datos generales</h3>
-
-        <label>Fecha</label>
-        <input id="todayDate" type="text" disabled>
-
-        <label>País</label>
-        <select id="country">
-          <option value="">Seleccionar país</option>
-          <option value="Perú">Perú</option>
-          <option value="Chile">Chile</option>
-          <option value="México">México</option>
-          <option value="Colombia">Colombia</option>
-        </select>
-
-        <label>RUC / RUT</label>
-        <input id="taxId" placeholder="Ej: 20123456789">
-
-        <button class="primary" type="button" onclick="lookupTaxId()">Buscar Razón Social</button>
-
-        <label>Razón Social</label>
-        <input id="businessName" disabled placeholder="Se completa al buscar">
-
-        <label>IGV / IVA</label>
-        <input id="tax" type="number" disabled>
-      </div>
-
-      <!-- COLUMNA DERECHA -->
-      <div class="card">
-        <h3>Detalle de la cotización</h3>
-
-        <label>Servicio</label>
-        <select id="service">
-          <option value="Implementación" data-price="500">Implementación</option>
-          <option value="Soporte mensual" data-price="100">Soporte mensual</option>
-          <option value="Mantenimiento" data-price="150">Mantenimiento</option>
-          <option value="Custom" data-price="0">Otro</option>
-        </select>
-
-        <label>Precio unitario</label>
-        <input id="price" type="number" value="500">
-
-        <label>Cantidad</label>
-        <input id="qty" type="number" value="1">
-
-        <label>Descuento % (máx 20)</label>
-        <input id="discount" type="number" value="0" max="20">
-
-        <button class="primary" onclick="addItem()">Agregar ítem</button>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Ítem</th>
-              <th class="right">Total</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="items"></tbody>
-        </table>
-
-        <div class="summary">
-          <div><span>Subtotal</span><span id="subtotal">S/ 0.00</span></div>
-          <div><span>IGV / IVA</span><span id="taxValue">S/ 0.00</span></div>
-          <div class="total"><span>Total</span><span id="total">S/ 0.00</span></div>
-        </div>
-
-        <label>Notas</label>
-        <textarea id="notes" placeholder="Condiciones, validez, observaciones..."></textarea>
-      </div>
-    </div>
+  <div class="header">
+    <img src="logo.png" alt="Gauss Control">
+    <h1>Cotizador Gauss Control</h1>
   </div>
 
+  <div class="grid">
+
+    <!-- DATOS GENERALES -->
+    <div class="card">
+      <h3>Datos generales</h3>
+
+      <label>Fecha de Cotización</label>
+      <input id="todayDate" disabled>
+
+      <label>Válido hasta</label>
+      <input id="validUntil" disabled>
+
+      <label>País</label>
+      <select id="country">
+        <option value="">Seleccionar país</option>
+        <option value="Perú">Perú</option>
+        <option value="Chile">Chile</option>
+        <option value="México">México</option>
+        <option value="Colombia">Colombia</option>
+      </select>
+
+      <label>RUC / RUT</label>
+      <input id="taxId" maxlength="11" placeholder="Ej: 20123456789">
+      <div id="taxIdError" class="error" style="display:none;"></div>
+
+      <button class="primary" type="button" onclick="lookupTaxId()">Buscar Razón Social</button>
+
+      <label>Razón Social</label>
+      <input id="businessName" placeholder="(en Perú se completa con el botón)">
+
+      <label>IGV / IVA</label>
+      <input id="tax" disabled>
+    </div>
+
+    <!-- DETALLE -->
+    <div class="card">
+      <h3>DETALLE DE LA COTIZACIÓN</h3>
+
+      <!-- PRICING SOLO CHILE -->
+      <div id="pricingWrap" style="display:none;">
+        <label>Pricing</label>
+        <select id="pricing">
+          <option value="">Seleccionar pricing</option>
+          <option value="PAO">PAO</option>
+          <option value="CODELCO">CODELCO</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+
+      <label>Producto / Servicio</label>
+      <select id="service">
+        <option value="">Seleccionar</option>
+        <option>Gauss Alert</option>
+        <option>Cognus</option>
+        <option>Licencia GA</option>
+        <option>Licencia Cognus</option>
+        <option>Instalación GA</option>
+        <option>Instalación Cognus</option>
+        <option>Implementación exitosa</option>
+        <option>Gauss Fleet</option>
+        <option>Risk 360</option>
+      </select>
+
+      <!-- Marca (Gauss Alert) -->
+      <div id="brandWrap" style="display:none;">
+        <label>Marca</label>
+        <select id="brand"></select>
+      </div>
+
+      <!-- Complementarios -->
+      <div id="addonWrap" style="display:none;">
+        <label>¿Contiene dispositivos complementarios?</label>
+        <div class="checkboxes" id="addonBox"></div>
+        <div class="muted">Puedes marcar más de 1. “No hay adicional” no puede combinarse.</div>
+      </div>
+
+      <!-- Tipo (Cognus) -->
+      <div id="typeWrap" style="display:none;">
+        <label>Tipo</label>
+        <select id="cognusType">
+          <option>Lite</option>
+          <option>Pro</option>
+          <option>Plus</option>
+          <option>Mobile</option>
+        </select>
+      </div>
+
+      <label>Moneda</label>
+      <select id="currency"></select>
+
+      <label>Cantidad</label>
+      <input id="qty" type="text" inputmode="numeric" maxlength="4" placeholder="Ej: 40" value="1">
+
+      <label>Precio unitario</label>
+      <div class="row-inline">
+        <input id="price" type="text" inputmode="decimal" value="0.00" disabled>
+        <button class="primary" id="editPriceBtn" type="button">Editar</button>
+      </div>
+
+      <button class="primary" type="button" onclick="addItem()">Agregar ítem</button>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Detalle</th>
+            <th class="right">Total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="items"></tbody>
+      </table>
+
+      <div class="summary">
+        <div><span>Subtotal</span><span id="subtotal">—</span></div>
+        <div><span>IGV / IVA</span><span id="taxValue">—</span></div>
+        <div class="total"><span>Total</span><span id="total">—</span></div>
+      </div>
+
+      <button class="primary" id="pdfBtn" type="button">Convertir en PDF</button>
+    </div>
+
+  </div>
+</div>
+
 <script>
-  const items = [];
-  const currency = "S/ ";
+/* =========================
+   Estado / refs
+========================= */
+const quoteItems = [];
+let currencyPrefix = "";
 
-  const serviceSelect = document.getElementById("service");
-  const priceInput = document.getElementById("price");
-  const countrySelect = document.getElementById("country");
-  const taxInput = document.getElementById("tax");
+const countrySelect = document.getElementById("country");
+const taxInput = document.getElementById("tax");
 
-  const todayDateInput = document.getElementById("todayDate");
-  const taxIdInput = document.getElementById("taxId");
-  const businessNameInput = document.getElementById("businessName");
+const taxIdInput = document.getElementById("taxId");
+const taxIdError = document.getElementById("taxIdError");
+const businessNameInput = document.getElementById("businessName");
 
-  const taxByCountry = {
-    "Perú": 18,
-    "Chile": 19,
-    "México": 16,
-    "Colombia": 19
-  };
+const pricingWrap = document.getElementById("pricingWrap");
+const pricingSelect = document.getElementById("pricing");
 
-  // Fecha local según el equipo que abre la página
-  (function setTodayDate() {
-    const d = new Date();
-    todayDateInput.value = d.toLocaleDateString(undefined, {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit"
-    });
-  })();
+const serviceSelect = document.getElementById("service");
 
-  serviceSelect.addEventListener("change", e => {
-    priceInput.value = e.target.selectedOptions[0].dataset.price;
+const brandWrap = document.getElementById("brandWrap");
+const brandSelect = document.getElementById("brand");
+
+const addonWrap = document.getElementById("addonWrap");
+const addonBox = document.getElementById("addonBox");
+
+const typeWrap = document.getElementById("typeWrap");
+const cognusType = document.getElementById("cognusType");
+
+const currencySelect = document.getElementById("currency");
+const qtyInput = document.getElementById("qty");
+const priceInput = document.getElementById("price");
+const editPriceBtn = document.getElementById("editPriceBtn");
+const pdfBtn = document.getElementById("pdfBtn");
+
+/* =========================
+   Config Demo SUNAT
+   (Para producción lo cambiamos a tu Netlify Function)
+========================= */
+const SUNAT_DEMO_URL = (ruc) => `https://api.apis.net.pe/v2/sunat/ruc/${ruc}?token=demo`;
+
+/* =========================
+   Data base
+========================= */
+const taxByCountry = { "Perú":18, "Chile":19, "México":16, "Colombia":19 };
+
+const currenciesByCountry = {
+  "Perú":["USD","PEN"],
+  "Chile":["UF","CLP","USD"],
+  "México":["USD","MXN"],
+  "Colombia":["USD","COP"]
+};
+
+const currencyPrefixByCode = {
+  "PEN":"S/ ",
+  "USD":"USD ",
+  "CLP":"CLP ",
+  "UF":"UF ",
+  "MXN":"MXN ",
+  "COP":"COP "
+};
+
+const brandsByCountry = {
+  "Perú":["Queclink"],
+  "Chile":["Queclink","Cipia","Mitac"],
+  "Colombia":["Queclink","Cipia"],
+  "México":["Queclink","Cipia"]
+};
+
+/* =========================
+   Reglas de precios
+========================= */
+const PERU_LICENSE_GA_TIERS = [
+  { from: 1,    to: 10,       price: 77 },
+  { from: 11,   to: 100,      price: 65 },
+  { from: 101,  to: 300,      price: 63 },
+  { from: 301,  to: 1000,     price: 59 },
+  { from: 1001, to: 3000,     price: 56 },
+  { from: 3001, to: Infinity, price: 47 }
+];
+
+const PERU_GA_QUECLINK_PRICE_USD = 494;
+const PERU_VIBRADOR_PRICE_USD = 220;
+const PERU_DASHCAM_PRICE_USD = null; // por ahora sin precio
+
+/* =========================
+   Fechas
+========================= */
+(()=>{
+  const now = new Date();
+  const fmt = d => d.toLocaleDateString(undefined,{year:"numeric",month:"2-digit",day:"2-digit"});
+  document.getElementById("todayDate").value = fmt(now);
+  const v = new Date(now); v.setDate(v.getDate()+14);
+  document.getElementById("validUntil").value = fmt(v);
+})();
+
+/* =========================
+   Helpers
+========================= */
+function showTaxIdError(msg){
+  taxIdError.style.display = msg ? "block" : "none";
+  taxIdError.textContent = msg || "";
+}
+
+function setCurrencyOptions(){
+  currencySelect.innerHTML="";
+  const opts = currenciesByCountry[countrySelect.value] || ["USD"];
+  opts.forEach(c=>{
+    const o=document.createElement("option");
+    o.value=c; o.textContent=c;
+    currencySelect.appendChild(o);
+  });
+  currencySelect.value = opts[0] || "USD";
+  currencyPrefix = currencyPrefixByCode[currencySelect.value] || "";
+}
+
+function getSelectedAddons(){
+  const cbs = addonBox.querySelectorAll('input[type="checkbox"]');
+  return Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
+}
+
+function renderAddonCheckboxes(options){
+  addonBox.innerHTML = "";
+
+  options.forEach(opt=>{
+    const row = document.createElement("label");
+    row.innerHTML = `<input type="checkbox" value="${opt}"> <span>${opt}</span>`;
+    addonBox.appendChild(row);
   });
 
-  countrySelect.addEventListener("change", () => {
-    const pct = taxByCountry[countrySelect.value];
-    taxInput.value = pct ?? "";
-    render();
-  });
+  addonBox.onchange = (e)=>{
+    const target = e.target;
+    if(target.tagName !== "INPUT") return;
 
-  function addItem() {
-    if (!countrySelect.value) {
-      alert("Primero selecciona un país");
-      return;
+    const cbs = Array.from(addonBox.querySelectorAll('input[type="checkbox"]'));
+    const none = cbs.find(cb => cb.value === "No hay adicional");
+    if(!none) return;
+
+    if(target.value === "No hay adicional" && target.checked){
+      cbs.forEach(cb => { if(cb !== target) cb.checked = false; });
+    } else if(target.value !== "No hay adicional" && target.checked){
+      none.checked = false;
     }
 
-    const name = serviceSelect.value === "Custom" ? "Servicio" : serviceSelect.value;
-    const price = Number(priceInput.value);
-    const qty = Number(document.getElementById("qty").value);
-    const discount = Math.min(20, Number(document.getElementById("discount").value));
+    applyAutoPricing();
+  };
+}
 
-    const total = price * qty * (1 - discount / 100);
-    items.push({ name, total });
-    render();
+function splitByTiers(qty, tiers){
+  let remaining = qty;
+  const lines = [];
+
+  for(const t of tiers){
+    if(remaining <= 0) break;
+
+    const rangeSize = (t.to === Infinity) ? Infinity : (t.to - t.from + 1);
+    const take = Math.min(remaining, rangeSize === Infinity ? remaining : rangeSize);
+
+    if(take > 0){
+      lines.push({ from: t.from, to: t.to, qty: take, unitPrice: t.price });
+      remaining -= take;
+    }
+  }
+  return lines;
+}
+
+function getQtyInt(){
+  const raw = (qtyInput.value || "").replace(/\D/g,"").slice(0,4);
+  const n = Math.max(1, parseInt(raw || "1", 10));
+  return n;
+}
+
+/* precio: máximo 2 decimales */
+function normalizePriceText(){
+  let v = (priceInput.value || "").replace(",", ".").replace(/[^0-9.]/g, "");
+  const parts = v.split(".");
+  if(parts.length > 2) v = parts[0] + "." + parts.slice(1).join("");
+  const [a, b=""] = v.split(".");
+  const dec = b.slice(0,2);
+  v = dec.length ? `${a || "0"}.${dec}` : (a || "0");
+  priceInput.value = v;
+}
+
+function getUnitPrice(){
+  normalizePriceText();
+  const n = Number(priceInput.value || "0");
+  return isFinite(n) ? n : 0;
+}
+
+/* =========================
+   Dinámicos
+========================= */
+function updateDynamicFields(){
+  pricingWrap.style.display = (countrySelect.value === "Chile") ? "block" : "none";
+  if(countrySelect.value !== "Chile") pricingSelect.value = "";
+
+  brandWrap.style.display="none";
+  addonWrap.style.display="none";
+  typeWrap.style.display="none";
+  addonBox.innerHTML="";
+
+  if(serviceSelect.value === "Gauss Alert"){
+    brandWrap.style.display="block";
+    brandSelect.innerHTML="";
+
+    (brandsByCountry[countrySelect.value] || []).forEach(b=>{
+      const o=document.createElement("option");
+      o.value=b; o.textContent=b;
+      brandSelect.appendChild(o);
+    });
+
+    updateAddonOptions();
   }
 
-  function render() {
-    const tbody = document.getElementById("items");
-    tbody.innerHTML = "";
+  if(serviceSelect.value === "Cognus"){
+    typeWrap.style.display="block";
+  }
 
-    let subtotal = 0;
-    items.forEach((it, i) => {
-      subtotal += it.total;
+  applyAutoPricing();
+}
+
+function updateAddonOptions(){
+  addonWrap.style.display = "none";
+  addonBox.innerHTML = "";
+
+  if(serviceSelect.value !== "Gauss Alert") return;
+
+  const brand = brandSelect.value || "";
+  if(!brand) return;
+
+  addonWrap.style.display = "block";
+
+  let opts = [];
+  if(brand === "Queclink" || brand === "Mitac"){
+    opts = ["Vibrador", "No hay adicional"];
+  } else if(brand === "Cipia"){
+    opts = ["Dashcam", "Vibrador", "No hay adicional"];
+  } else {
+    opts = ["No hay adicional"];
+  }
+
+  renderAddonCheckboxes(opts);
+}
+
+/* =========================
+   Auto Pricing
+========================= */
+function applyAutoPricing(){
+  // si el usuario está editando, no pisar su valor
+  if(priceInput.disabled === false) return;
+
+  const country = countrySelect.value;
+  const product = serviceSelect.value;
+  const brand = brandSelect.value || "";
+  const qty = getQtyInt();
+
+  // Chile + PAO + Licencia GA => 1.56 UF (no editable)
+  if(country === "Chile" && pricingSelect.value === "PAO" && product === "Licencia GA"){
+    currencySelect.value = "UF";
+    currencyPrefix = currencyPrefixByCode["UF"];
+    priceInput.value = "1.56";
+    priceInput.disabled = true;
+    editPriceBtn.disabled = true;
+    editPriceBtn.textContent = "Editar";
+    return;
+  }
+
+  // Perú: Gauss Alert + Queclink => 494 USD (editable opcional)
+  if(country === "Perú" && product === "Gauss Alert" && brand === "Queclink"){
+    currencySelect.value = "USD";
+    currencyPrefix = currencyPrefixByCode["USD"];
+    priceInput.value = Number(PERU_GA_QUECLINK_PRICE_USD).toFixed(2);
+    priceInput.disabled = true;
+    editPriceBtn.disabled = false;
+    editPriceBtn.textContent = "Editar";
+    return;
+  }
+
+  // Perú: Licencia GA => por tramos: mostrar PROMEDIO (no editable)
+  if(country === "Perú" && product === "Licencia GA"){
+    currencySelect.value = "USD";
+    currencyPrefix = currencyPrefixByCode["USD"];
+
+    const tierLines = splitByTiers(qty, PERU_LICENSE_GA_TIERS);
+    const total = tierLines.reduce((s,t)=>s+(t.qty*t.unitPrice),0);
+    const avg = total / qty;
+
+    priceInput.value = avg.toFixed(2);
+    priceInput.disabled = true;
+    editPriceBtn.disabled = true;
+    editPriceBtn.textContent = "Editar";
+    return;
+  }
+
+  currencyPrefix = currencyPrefixByCode[currencySelect.value] || "";
+  if(!priceInput.value) priceInput.value = "0.00";
+  normalizePriceText();
+  editPriceBtn.disabled = false;
+  editPriceBtn.textContent = "Editar";
+}
+
+/* =========================
+   Editar precio
+========================= */
+editPriceBtn.addEventListener("click", ()=>{
+  const country = countrySelect.value;
+  const product = serviceSelect.value;
+
+  // si es por tramos, no se edita
+  if(country === "Perú" && product === "Licencia GA") return;
+  if(country === "Chile" && pricingSelect.value === "PAO" && product === "Licencia GA") return;
+
+  const willEnable = priceInput.disabled; // si está bloqueado, habilitar
+  priceInput.disabled = !willEnable;
+  editPriceBtn.textContent = willEnable ? "Bloquear" : "Editar";
+
+  if(willEnable){
+    priceInput.focus();
+    priceInput.setSelectionRange(priceInput.value.length, priceInput.value.length);
+  }else{
+    normalizePriceText();
+    const n = getUnitPrice();
+    priceInput.value = n.toFixed(2);
+    render();
+  }
+});
+
+priceInput.addEventListener("input", ()=>{
+  if(priceInput.disabled) return;
+  normalizePriceText();
+});
+
+priceInput.addEventListener("blur", ()=>{
+  if(priceInput.disabled) return;
+  const n = getUnitPrice();
+  priceInput.value = n.toFixed(2);
+  render();
+});
+
+/* =========================
+   Construcción de ítems con detalle
+========================= */
+function buildQuoteItem(){
+  const country = countrySelect.value;
+  const product = serviceSelect.value;
+  const pricing = pricingSelect.value || "";
+  const brand = brandSelect.value || "";
+  const addons = getSelectedAddons();
+  const qty = getQtyInt();
+
+  const currency = currencySelect.value || "USD";
+  const prefix = currencyPrefixByCode[currency] || "";
+
+  let header = product || "(sin producto)";
+  if(country === "Chile" && pricing) header = `[${pricing}] ${header}`;
+  if(product === "Gauss Alert" && brand) header += ` - ${brand}`;
+
+  const lines = [];
+
+  // Perú - Licencia GA: tramos con detalle
+  if(country === "Perú" && product === "Licencia GA"){
+    const tierLines = splitByTiers(qty, PERU_LICENSE_GA_TIERS);
+
+    tierLines.forEach(tl=>{
+      const total = tl.qty * tl.unitPrice;
+      const rangeLabel = (tl.to === Infinity) ? `${tl.from}+` : `${tl.from}–${tl.to}`;
+      lines.push({
+        desc: `• Tramo ${rangeLabel}: ${tl.qty} x ${tl.unitPrice.toFixed(2)} = ${prefix}${total.toFixed(2)}`,
+        total
+      });
+    });
+
+    const itemTotal = lines.reduce((s,l)=>s+l.total,0);
+    return { header: `${header} (por tramos)`, prefix, total: itemTotal, lines };
+  }
+
+  // Caso general: usa el precio unitario actual (auto o editado)
+  const unit = getUnitPrice();
+  const baseTotal = qty * unit;
+  lines.push({
+    desc: `• Base: ${qty} x ${unit.toFixed(2)} = ${prefix}${baseTotal.toFixed(2)}`,
+    total: baseTotal
+  });
+
+  // Complementos (1 por unidad)
+  if(product === "Gauss Alert" && addons.length){
+    addons.forEach(a=>{
+      if(a === "No hay adicional") return;
+
+      if(country === "Perú" && a === "Vibrador"){
+        const total = qty * PERU_VIBRADOR_PRICE_USD;
+        lines.push({
+          desc: `• Complemento Vibrador: ${qty} x ${PERU_VIBRADOR_PRICE_USD.toFixed(2)} = ${prefix}${total.toFixed(2)}`,
+          total
+        });
+      } else if(country === "Perú" && a === "Dashcam"){
+        if(PERU_DASHCAM_PRICE_USD == null){
+          lines.push({ desc: `• Complemento Dashcam: (sin precio configurado)`, total: 0 });
+        } else {
+          const total = qty * PERU_DASHCAM_PRICE_USD;
+          lines.push({
+            desc: `• Complemento Dashcam: ${qty} x ${PERU_DASHCAM_PRICE_USD.toFixed(2)} = ${prefix}${total.toFixed(2)}`,
+            total
+          });
+        }
+      } else {
+        lines.push({ desc: `• Complemento ${a}: (sin precio configurado)`, total: 0 });
+      }
+    });
+  }
+
+  const itemTotal = lines.reduce((s,l)=>s+l.total,0);
+  return { header: addons.length ? `${header} (${addons.join(", ")})` : header, prefix, total: itemTotal, lines };
+}
+
+/* =========================
+   Add / Render
+========================= */
+function addItem(){
+  if(!serviceSelect.value){
+    alert("Selecciona un Producto / Servicio.");
+    return;
+  }
+
+  qtyInput.value = String(getQtyInt());
+  applyAutoPricing();
+
+  const item = buildQuoteItem();
+  quoteItems.push(item);
+  render();
+}
+
+function fmtMoney(prefix, n){
+  return `${prefix}${Number(n||0).toFixed(2)}`;
+}
+
+function render(){
+  const tbody = document.getElementById("items");
+  tbody.innerHTML = "";
+
+  let subtotal = 0;
+
+  quoteItems.forEach((it, idx)=>{
+    subtotal += it.total;
+
+    tbody.innerHTML += `
+      <tr>
+        <td><b>${it.header}</b></td>
+        <td class="right"><b>${fmtMoney(it.prefix, it.total)}</b></td>
+        <td class="right"><button class="danger" type="button" onclick="removeItem(${idx})">X</button></td>
+      </tr>
+    `;
+
+    it.lines.forEach(line=>{
       tbody.innerHTML += `
         <tr>
-          <td>${it.name}</td>
-          <td class="right">${currency}${it.total.toFixed(2)}</td>
-          <td><button class="danger" onclick="removeItem(${i})">X</button></td>
-        </tr>`;
+          <td style="padding-left:22px; color:#374151;">${line.desc}</td>
+          <td class="right">${fmtMoney(it.prefix, line.total)}</td>
+          <td></td>
+        </tr>
+      `;
     });
+  });
 
-    const taxPct = (Number(taxInput.value) || 0) / 100;
-    const taxValue = subtotal * taxPct;
-    const total = subtotal + taxValue;
+  const taxPct = (Number(taxInput.value) || 0) / 100;
+  const taxVal = subtotal * taxPct;
 
-    document.getElementById("subtotal").innerText = currency + subtotal.toFixed(2);
-    document.getElementById("taxValue").innerText = currency + taxValue.toFixed(2);
-    document.getElementById("total").innerText = currency + total.toFixed(2);
+  const displayPrefix = currencyPrefixByCode[currencySelect.value] || "";
+  document.getElementById("subtotal").innerText = fmtMoney(displayPrefix, subtotal);
+  document.getElementById("taxValue").innerText = fmtMoney(displayPrefix, taxVal);
+  document.getElementById("total").innerText = fmtMoney(displayPrefix, subtotal + taxVal);
+}
+
+function removeItem(i){
+  quoteItems.splice(i,1);
+  render();
+}
+
+/* =========================
+   Buscar Razón Social (Perú) - DEMO FUNCIONAL
+========================= */
+async function lookupTaxId(){
+  showTaxIdError("");
+
+  if(countrySelect.value !== "Perú"){
+    showTaxIdError("La búsqueda automática solo está configurada para Perú.");
+    return;
   }
 
-  function removeItem(i) {
-    items.splice(i, 1);
-    render();
+  const ruc = (taxIdInput.value || "").trim();
+  if(!/^\d{11}$/.test(ruc)){
+    showTaxIdError("El RUC debe tener 11 dígitos numéricos.");
+    return;
   }
 
-  // Consulta RUC (Perú) vía Netlify Function
-  async function lookupTaxId() {
-    if (countrySelect.value !== "Perú") {
-      alert("La búsqueda automática funciona solo para Perú.");
-      return;
+  businessNameInput.value = "Buscando...";
+
+  try{
+    const res = await fetch(SUNAT_DEMO_URL(ruc));
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+
+    const rs = data.razonSocial || data.nombre || "";
+    businessNameInput.value = rs || "";
+    if(!rs){
+      showTaxIdError("No se encontró razón social para ese RUC.");
     }
-
-    const ruc = (taxIdInput.value || "").trim();
-    if (!/^\d{11}$/.test(ruc)) {
-      alert("RUC inválido. Debe tener 11 dígitos.");
-      return;
-    }
-
-    businessNameInput.value = "Buscando...";
-
-    try {
-      const resp = await fetch(`/.netlify/functions/ruc?numero=${encodeURIComponent(ruc)}`);
-      const data = await resp.json();
-
-      if (!resp.ok || !data.ok) {
-        businessNameInput.value = "";
-        alert("No se pudo obtener la Razón Social.");
-        return;
-      }
-
-      businessNameInput.value = data.razonSocial || "";
-    } catch (e) {
-      businessNameInput.value = "";
-      alert("Error consultando RUC");
-    }
+  }catch(e){
+    businessNameInput.value = "";
+    showTaxIdError("No se pudo consultar la razón social (demo).");
   }
+}
+
+/* =========================
+   Events
+========================= */
+countrySelect.addEventListener("change", ()=>{
+  showTaxIdError("");
+  businessNameInput.value = "";
+
+  taxInput.value = taxByCountry[countrySelect.value] || "";
+  pricingWrap.style.display = countrySelect.value === "Chile" ? "block" : "none";
+  if(countrySelect.value !== "Chile") pricingSelect.value = "";
+
+  setCurrencyOptions();
+
+  // volver a modo precio bloqueado al cambiar país
+  priceInput.disabled = true;
+  editPriceBtn.textContent = "Editar";
+  editPriceBtn.disabled = false;
+
+  updateDynamicFields();
+  render();
+});
+
+currencySelect.addEventListener("change", ()=>{
+  currencyPrefix = currencyPrefixByCode[currencySelect.value] || "";
+  applyAutoPricing();
+  render();
+});
+
+serviceSelect.addEventListener("change", ()=>{
+  // al cambiar producto, volver a precio bloqueado para que aplique auto pricing
+  priceInput.disabled = true;
+  editPriceBtn.textContent = "Editar";
+  editPriceBtn.disabled = false;
+
+  updateDynamicFields();
+  render();
+});
+
+pricingSelect.addEventListener("change", ()=>{
+  priceInput.disabled = true;
+  editPriceBtn.textContent = "Editar";
+  editPriceBtn.disabled = false;
+  applyAutoPricing();
+  render();
+});
+
+brandSelect.addEventListener("change", ()=>{
+  priceInput.disabled = true;
+  editPriceBtn.textContent = "Editar";
+  editPriceBtn.disabled = false;
+  updateAddonOptions();
+  applyAutoPricing();
+  render();
+});
+
+// Cantidad: solo enteros, max 4 dígitos (sin bloquear escritura)
+qtyInput.addEventListener("input", ()=>{
+  qtyInput.value = (qtyInput.value || "").replace(/\D/g,"").slice(0,4);
+});
+
+qtyInput.addEventListener("blur", ()=>{
+  qtyInput.value = String(getQtyInt());
+  applyAutoPricing();
+  render();
+});
+
+pdfBtn.addEventListener("click", ()=>{
+  alert("Próximamente: Convertir a PDF 🙂");
+});
+
+/* =========================
+   Init
+========================= */
+(()=>{
+  taxInput.value = "";
+  setCurrencyOptions();
+  priceInput.value = "0.00";
+  priceInput.disabled = true;
+  editPriceBtn.textContent = "Editar";
+  editPriceBtn.disabled = false;
+  updateDynamicFields();
+  render();
+})();
 </script>
 </body>
 </html>
